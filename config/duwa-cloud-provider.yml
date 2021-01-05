@@ -1,0 +1,35 @@
+server:
+  port: 32002
+spring:
+  application:
+    name: duwa-cloud-provider
+  cloud:
+    config:
+      name: duwa-cloud-provider
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: duwa-cloud-config
+      label: master
+    consul:
+      host: 172.16.1.105
+      port: 8500
+      discovery:
+        health-check-interval: 3s
+        health-check-path: /actuator/health
+        heartbeat:
+          enabled: true
+        hostname: ${spring.cloud.client.ip-address}
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+        port: ${server.port}
+        prefer-ip-address: true
+        service-name: ${spring.application.name}
+        health-check-url: ${spring.cloud.client.ip-address}:${server.port}
+  datasource:
+    url: jdbc:mysql://172.16.236.72:3306/db_project_001?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: C21robot123!@#
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  type-aliases-package: com.dwline.duwa.cloud.provider.entity
+  mapper-locations: classpath*:mapper/*Mapper.xml

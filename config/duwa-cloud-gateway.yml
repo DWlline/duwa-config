@@ -1,0 +1,41 @@
+server:
+  port: 32000
+spring:
+  application:
+    name: duwa-cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: duwa-cloud-consumer
+          uri: lb://duwa-cloud-consumer
+          predicates:
+            - Path= /consumer/**
+          filters:
+            - StripPrefix=1
+        - id: duwa-cloud-provider
+          uri: lb://duwa-cloud-provider
+          predicates:
+            - Path= /provider/**
+          filters:
+            - StripPrefix=1
+    consul:
+      host: 172.16.1.105
+      discovery:
+        health-check-interval: 3s
+        health-check-path: /actuator/health
+        heartbeat:
+          enabled: true
+        hostname: ${spring.cloud.client.ip-address}
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+        port: ${server.port}
+        prefer-ip-address: true
+        service-name: ${spring.application.name}
+        health-check-url: ${spring.cloud.client.ip-address}:${server.port}
+      port: 8500
+  redis:
+    host: 10.0.0.203
+    port: 6379
