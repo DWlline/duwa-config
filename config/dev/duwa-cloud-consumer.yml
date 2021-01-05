@@ -1,23 +1,12 @@
-server:
-  port: 32001
 spring:
-  application:
-    name: duwa-cloud-consumer
   cloud:
     consul:
-      host: 172.16.1.105
       discovery:
         health-check-interval: 3s
         health-check-path: /actuator/health
         heartbeat:
           enabled: true
-        hostname: ${spring.cloud.client.ip-address}
-        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
-        port: ${server.port}
-        prefer-ip-address: true
-        service-name: ${spring.application.name}
         health-check-url: ${spring.cloud.client.ip-address}:${server.port}
-      port: 8500
 feign:
   client:
     config:
